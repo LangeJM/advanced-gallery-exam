@@ -59,6 +59,7 @@ class Gallery extends React.Component {
   }
 
   componentWillReceiveProps(props) {
+    this.setState({images:[]})    
     this.getImages(props.tag);
   }
 
