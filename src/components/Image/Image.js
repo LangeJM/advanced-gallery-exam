@@ -64,7 +64,7 @@ class Image extends React.Component {
         }}
         >
         <div>
-          <FontAwesome className="image-icon" name="sync-alt" title="rotate" onClick={(event) => this.onRotateImage(event)} style={{height:'2rem'}}/>
+          <FontAwesome className="image-icon" name="sync-alt" title="rotate" onClick={(event) => this.onRotateImage(event)} />
           <FontAwesome className="image-icon" name="trash-alt" title="delete" onClick={(event) => this.props.deleteImage(event, this.props.dto)}/>
           <FontAwesome className="image-icon" name="expand" title="expand" onClick={(event) => this.onEnlargeImage(event)} />
           <ImageModal
