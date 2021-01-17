@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Image from '../Image';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import './Gallery.scss';
 
 class Gallery extends React.Component {
@@ -13,7 +14,9 @@ class Gallery extends React.Component {
     super(props);
     this.state = {
       images: [],
-      galleryWidth: this.getGalleryWidth()
+      galleryWidth: this.getGalleryWidth(),
+      apiCallCounter: 0,
+      maxPages: 0
     };
   }
 
@@ -25,7 +28,8 @@ class Gallery extends React.Component {
     }
   }
   getImages(tag) {
-    const getImagesUrl = `services/rest/?method=flickr.photos.search&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&format=json&nojsoncallback=1`;
+    const pageNumber = this.state.apiCallCounter + 1;
+    const getImagesUrl = `services/rest/?method=flickr.photos.search&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&page=${pageNumber}&format=json&nojsoncallback=1`;
     const baseUrl = 'https://api.flickr.com/';
     axios({
       url: getImagesUrl,
@@ -34,13 +38,15 @@ class Gallery extends React.Component {
     })
       .then(res => res.data)
       .then(res => {
+        this.setState({apiCallCounter: this.state.apiCallCounter + 1})
         if (
           res &&
           res.photos &&
           res.photos.photo &&
           res.photos.photo.length > 0
         ) {
-          this.setState({images: res.photos.photo});
+          // this.setState({ images: res.photos.photo }); This original setState argument is being replaced by the one below adding to the array per scroll
+          this.setState({ images: [...this.state.images, ...res.photos.photo], maxPages: res.photos.pages });
         }
       });
   }
@@ -65,12 +71,28 @@ class Gallery extends React.Component {
   }
 
   render() {
-    const { galleryWidth, images } = this.state;
+    console.log(this.state)
+    const { galleryWidth, images, maxPages, apiCallCounter } = this.state
     return (
       <div className="gallery-root">
-        {images.map(dto => {
-          return <Image key={'image-' + dto.id} dto={dto} galleryWidth={galleryWidth} deleteImage={this.onDeleteImage}/>;
-        })}
+        <InfiniteScroll
+          dataLength={images.length}
+          hasMore={apiCallCounter >= 1 && maxPages >= apiCallCounter} // this is to prevent firing of the infinite scroll for the first call
+          next={() => this.getImages(this.props.tag)}
+          loader={<h4>Loading...</h4>}
+          scrollThreshold={'100px'}
+          // scrollableTarget="#body-id"
+          // initialScrollY="2px"
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>End of image list</b>
+            </p>
+          }
+        >
+          {images.map((dto, index) => (
+            <Image key={`image-${index}-${dto.id}`} dto={dto} galleryWidth={galleryWidth} deleteImage={this.onDeleteImage} />
+          ))}
+        </InfiniteScroll>
       </div>
     );
   }
