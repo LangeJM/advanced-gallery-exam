@@ -4,29 +4,13 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#app')
 
-export class ImageModal extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      showModal: props.showModal
-    };
-  }
+const ImageModal = (props) => {
 
-  handleOpenModal() {
-    this.setState({ showModal: true });
-  }
-  
-  handleCloseModal() {
-    this.setState({ showModal: false });
-  }
-
-
-  render() {
-    const { showModal, backgroundImage, closeModal } = this.props;
+    const { backgroundImage, closeModal } = props;
     return (
       <div >
         <Modal
-          isOpen={showModal}
+          isOpen={props.showModal}
           contentLabel="Image Modal"
           style={{
             content: {
@@ -43,6 +27,7 @@ export class ImageModal extends React.Component {
         </Modal>
       </div>
     );
-  }
 }
+
+export default ImageModal;
 
