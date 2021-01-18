@@ -45,7 +45,6 @@ class Gallery extends React.Component {
           res.photos.photo &&
           res.photos.photo.length > 0
         ) {
-          // this.setState({ images: res.photos.photo }); This original setState argument is being replaced by the one below adding to the array per scroll
           this.setState({ images: [...this.state.images, ...res.photos.photo], maxPages: res.photos.pages });
         }
       });
@@ -56,11 +55,16 @@ class Gallery extends React.Component {
     this.setState({
       galleryWidth: document.body.clientWidth
     });
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentWillReceiveProps(props) {
     this.setState({images:[]})
     this.getImages(props.tag);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   onDeleteImage = (event, imageDetails) => {
@@ -71,8 +75,11 @@ class Gallery extends React.Component {
     })});
   }
 
+  updateDimensions = () => {
+    this.setState({ galleryWidth: document.body.clientWidth });
+  };
+
   render() {
-    console.log(this.state)
     const { galleryWidth, images, maxPages, apiCallCounter } = this.state
     return (
       <div className="gallery-root">
@@ -82,8 +89,6 @@ class Gallery extends React.Component {
           next={() => this.getImages(this.props.tag)}
           loader={<h4>Loading...</h4>}
           scrollThreshold={'100px'}
-          // scrollableTarget="#body-id"
-          // initialScrollY="2px"
           endMessage={
             <p style={{ textAlign: 'center' }}>
               <b>End of image list</b>

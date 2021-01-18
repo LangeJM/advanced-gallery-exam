@@ -21,10 +21,11 @@ class Image extends React.Component {
   }
 
   calcImageSize() {
-    const {galleryWidth} = this.props;
-    const targetSize = 200;
-    const imagesPerRow = Math.round(galleryWidth / targetSize);
-    const size = (galleryWidth / imagesPerRow);
+    const { galleryWidth } = this.props;
+    const imagesPerRow = 10;
+    // const targetSize = Math.round
+    // const imagesPerRow = Math.round(galleryWidth / targetSize);
+    const size = Math.round(galleryWidth / imagesPerRow);
     this.setState({
       size
     });
@@ -52,7 +53,11 @@ class Image extends React.Component {
   }
 
   render() {
-    const { rotation, size, showModal } = this.state;
+    const { rotation, showModal } = this.state;
+    const { galleryWidth } = this.props;
+    const imagesPerRow = Math.round(galleryWidth / 200);
+    const size = Math.round(galleryWidth / imagesPerRow) -1;
+
     return (
       <div
         className="image-root"
