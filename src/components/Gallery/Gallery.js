@@ -1,4 +1,3 @@
-
 import Image from '../Image';
 import './Gallery.scss';
 
@@ -8,20 +7,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import update from 'immutability-helper';
 
-
 const Gallery = (props) => {
   const [images, setImages] = useState([]);
-  const [galleryWidth, setGalleryWidth] = useState(getGalleryWidth);
+  const [galleryWidth, setGalleryWidth] = useState(1000);
   const [apiCallCounter, setApiCallCounter] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
-
-  const getGalleryWidth = () => {
-    try {
-      return document.body.clientWidth;
-    } catch (e) {
-      return 1000;
-    }
-  }
 
   const getImages = (tag) => {
     const pageNumber = apiCallCounter + 1;
@@ -51,11 +41,12 @@ const Gallery = (props) => {
     getImages(props.tag);
     setGalleryWidth(document.body.clientWidth);
     window.addEventListener('resize', updateDimensions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const isFirstRun = useRef(true);
   const debouncedSave = useRef(
-    debounce(nextValue => getImages(nextValue), 1000)).current;
+    debounce(nextValue => getImages(nextValue), 1500)).current;
 
   useEffect(() => { // Component did update hooks equivalent
     if (isFirstRun.current) {
@@ -69,6 +60,7 @@ const Gallery = (props) => {
     return function cleanup() {
       window.removeEventListener('resize', updateDimensions);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const onDeleteImage = (event, imageDetails) => {
@@ -85,11 +77,6 @@ const Gallery = (props) => {
 
   const moveImage = (dragIndex, hoverIndex) => {
     const draggedImage = images[dragIndex];
-    /*
-      - copy the dragged image before hovered element (i.e., [hoverIndex, 0, draggedImage])
-      - remove the previous reference of dragged element (i.e., [dragIndex, 1])
-      - here we are using this update helper method from immutability-helper package
-    */
     setImages(
       update(images, {
         $splice: [[dragIndex, 1], [hoverIndex, 0, draggedImage]]
@@ -97,26 +84,26 @@ const Gallery = (props) => {
     );
   };
 
-    return (
-      <div className="gallery-root">
-        <InfiniteScroll
-          dataLength={images.length}
-          hasMore={apiCallCounter >= 1 && maxPages >= apiCallCounter} // this is to prevent firing of the infinite scroll for the first call
-          next={() => getImages(props.tag)}
-          loader={<h4>Loading...</h4>}
-          scrollThreshold={'100px'}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>End of image list</b>
-            </p>
-          }
-        >
-          {images.map((dto, index) => (
-            <Image key={`image-${dto.id}`} dto={dto} index={index} galleryWidth={galleryWidth} deleteImage={onDeleteImage} moveImage={ moveImage}/>
-          ))}
-        </InfiniteScroll>
-      </div>
-    );
+  return (
+    <div className="gallery-root">
+      <InfiniteScroll
+        dataLength={images.length}
+        hasMore={apiCallCounter >= 1 && maxPages >= apiCallCounter} // this is to prevent firing of the infinite scroll for the first call
+        next={() => getImages(props.tag)}
+        loader={<h4>Loading...</h4>}
+        scrollThreshold={'100px'}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>End of image list</b>
+          </p>
+        }
+      >
+        {images.map((dto, index) => (
+          <Image key={index} dto={dto} index={index} galleryWidth={galleryWidth} deleteImage={onDeleteImage} moveImage={moveImage} />
+        ))}
+      </InfiniteScroll>
+    </div>
+  );
 }
 
 export default Gallery;

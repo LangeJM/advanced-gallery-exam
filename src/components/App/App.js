@@ -7,7 +7,7 @@ import Gallery from '../Gallery';
 
 const App = () => {
 
-  const [tag, setTag] = useState('WIX, website, builder');
+  const [tag, setTag] = useState('Wiesn');
 
     return (
       <div className="app-root">

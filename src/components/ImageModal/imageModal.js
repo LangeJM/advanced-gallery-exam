@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Modal from 'react-modal';
 
@@ -23,7 +22,7 @@ const ImageModal = (props) => {
             }
           }}
         >
-          <img src={backgroundImage} onClick={() => closeModal()} />
+          <img src={backgroundImage} alt={"flickr" }onClick={() => closeModal()} />
         </Modal>
       </div>
     );

@@ -1,16 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { useDrag, useDrop } from 'react-dnd'
-import FontAwesome from 'react-fontawesome';
-// import { ItemTypes } from '../ItemTypes/ItemTypes'
-
 import ImageModal from '../ImageModal/imageModal'
 import './Image.scss';
 
-const type = 'Image' // we can import this as TILE from ItemTypes.js
+import React, { useState, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd'
+import FontAwesome from 'react-fontawesome';
+
+const type = 'Image'
 
 const Image = (props) => {
 
-  const ref = useRef(null); //Initialize the reference
+  const ref = useRef(null);
   
   const [rotation, setRotation] = useState(0)
   const [showModal, setShowModal] = useState(false)
@@ -41,7 +40,6 @@ const Image = (props) => {
   });
 
   drag(drop(ref));
-
 
   const urlFromDto = (dto) => {
     return `https://farm${dto.farm}.staticflickr.com/${dto.server}/${dto.id}_${dto.secret}.jpg`;
