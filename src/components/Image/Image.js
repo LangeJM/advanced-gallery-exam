@@ -1,13 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd'
 import FontAwesome from 'react-fontawesome';
+// import { ItemTypes } from '../ItemTypes/ItemTypes'
+
 import ImageModal from '../ImageModal/imageModal'
 import './Image.scss';
 
+const type = 'Image' // we can import this as TILE from ItemTypes.js
+
 const Image = (props) => {
+
+  const ref = useRef(null); //Initialize the reference
   
   const [rotation, setRotation] = useState(0)
   const [showModal, setShowModal] = useState(false)
-  const {dto, galleryWidth, deleteImage} = props;
+  const { dto, galleryWidth, deleteImage, index, moveImage } = props;
+  
+  const [, drop] = useDrop({
+    accept: type,
+    hover(item) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      moveImage(dragIndex, hoverIndex);
+
+      item.index = hoverIndex;
+    }
+  })
+
+  const [{ isDragging }, drag] = useDrag({
+    item: { type, id: dto.id, index },
+    collect: monitor => ({
+      isDragging: monitor.isDragging()
+    })
+  });
+
+  drag(drop(ref));
 
 
   const urlFromDto = (dto) => {
@@ -32,12 +65,14 @@ const Image = (props) => {
 
   return (
       <div
-        className="image-root"
-        style={{
+      className="image-root"
+      ref={ref}
+      style={{
           backgroundImage: `url(${urlFromDto(dto)})`,
           width: size + 'px',
           height: size + 'px',
-          transform: `rotate(${rotation}deg)`
+          transform: `rotate(${rotation}deg)`,
+          opacity: isDragging ? 0: 1
         }}
         >
         <div>

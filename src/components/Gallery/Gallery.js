@@ -6,6 +6,7 @@ import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import React, { useState, useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
+import update from 'immutability-helper';
 
 
 const Gallery = (props) => {
@@ -82,6 +83,20 @@ const Gallery = (props) => {
     setGalleryWidth(document.body.clientWidth );
   };
 
+  const moveImage = (dragIndex, hoverIndex) => {
+    const draggedImage = images[dragIndex];
+    /*
+      - copy the dragged image before hovered element (i.e., [hoverIndex, 0, draggedImage])
+      - remove the previous reference of dragged element (i.e., [dragIndex, 1])
+      - here we are using this update helper method from immutability-helper package
+    */
+    setImages(
+      update(images, {
+        $splice: [[dragIndex, 1], [hoverIndex, 0, draggedImage]]
+      })
+    );
+  };
+
     return (
       <div className="gallery-root">
         <InfiniteScroll
@@ -97,7 +112,7 @@ const Gallery = (props) => {
           }
         >
           {images.map((dto, index) => (
-            <Image key={`image-${index}-${dto.id}`} dto={dto} galleryWidth={galleryWidth} deleteImage={onDeleteImage} />
+            <Image key={`image-${dto.id}`} dto={dto} index={index} galleryWidth={galleryWidth} deleteImage={onDeleteImage} moveImage={ moveImage}/>
           ))}
         </InfiniteScroll>
       </div>
