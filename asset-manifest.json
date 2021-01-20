@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/flickr-gallery/static/css/main.8a6994ab.chunk.css",
-    "main.js": "/flickr-gallery/static/js/main.0d5efb52.chunk.js",
-    "main.js.map": "/flickr-gallery/static/js/main.0d5efb52.chunk.js.map",
-    "runtime-main.js": "/flickr-gallery/static/js/runtime-main.d97b84fa.js",
-    "runtime-main.js.map": "/flickr-gallery/static/js/runtime-main.d97b84fa.js.map",
-    "static/js/2.f1700206.chunk.js": "/flickr-gallery/static/js/2.f1700206.chunk.js",
-    "static/js/2.f1700206.chunk.js.map": "/flickr-gallery/static/js/2.f1700206.chunk.js.map",
-    "static/js/3.09875207.chunk.js": "/flickr-gallery/static/js/3.09875207.chunk.js",
-    "static/js/3.09875207.chunk.js.map": "/flickr-gallery/static/js/3.09875207.chunk.js.map",
-    "index.html": "/flickr-gallery/index.html",
-    "static/css/main.8a6994ab.chunk.css.map": "/flickr-gallery/static/css/main.8a6994ab.chunk.css.map",
-    "static/js/2.f1700206.chunk.js.LICENSE.txt": "/flickr-gallery/static/js/2.f1700206.chunk.js.LICENSE.txt"
+    "main.css": "/advanced-gallery-exam/static/css/main.8a6994ab.chunk.css",
+    "main.js": "/advanced-gallery-exam/static/js/main.0d5efb52.chunk.js",
+    "main.js.map": "/advanced-gallery-exam/static/js/main.0d5efb52.chunk.js.map",
+    "runtime-main.js": "/advanced-gallery-exam/static/js/runtime-main.b9e30bac.js",
+    "runtime-main.js.map": "/advanced-gallery-exam/static/js/runtime-main.b9e30bac.js.map",
+    "static/js/2.f1700206.chunk.js": "/advanced-gallery-exam/static/js/2.f1700206.chunk.js",
+    "static/js/2.f1700206.chunk.js.map": "/advanced-gallery-exam/static/js/2.f1700206.chunk.js.map",
+    "static/js/3.09875207.chunk.js": "/advanced-gallery-exam/static/js/3.09875207.chunk.js",
+    "static/js/3.09875207.chunk.js.map": "/advanced-gallery-exam/static/js/3.09875207.chunk.js.map",
+    "index.html": "/advanced-gallery-exam/index.html",
+    "static/css/main.8a6994ab.chunk.css.map": "/advanced-gallery-exam/static/css/main.8a6994ab.chunk.css.map",
+    "static/js/2.f1700206.chunk.js.LICENSE.txt": "/advanced-gallery-exam/static/js/2.f1700206.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d97b84fa.js",
+    "static/js/runtime-main.b9e30bac.js",
     "static/js/2.f1700206.chunk.js",
     "static/css/main.8a6994ab.chunk.css",
     "static/js/main.0d5efb52.chunk.js"
