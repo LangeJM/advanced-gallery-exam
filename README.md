@@ -1,4 +1,4 @@
-Check out the deployed app [here](https://langejm.github.io/flickr-gallery/)
+Check out the deployed app [here](https://langejm.github.io/advanced-gallery-exam/)
 
 # Flickr Gallery
 
