@@ -13,7 +13,7 @@ const Image = (props) => {
   
   const [rotation, setRotation] = useState(0)
   const [showModal, setShowModal] = useState(false)
-  const { dto, galleryWidth, deleteImage, index, moveImage } = props;
+  const { dto, galleryWidth, deleteImage, index, moveImage, imageSize, imageUrl, modalUrl } = props;
   
   const [, drop] = useDrop({
     accept: type,
@@ -41,14 +41,6 @@ const Image = (props) => {
 
   drag(drop(ref));
 
-  const urlFromDto = (dto) => {
-    return `https://farm${dto.farm}.staticflickr.com/${dto.server}/${dto.id}_${dto.secret}.jpg`;
-  }
-
-  const urlModalImage = (dto) => {
-    return `https://farm${dto.farm}.staticflickr.com/${dto.server}/${dto.id}_${dto.secret}_b.jpg`;
-  }
-
   const onRotateImage = (event) => {
     event.preventDefault();
     setRotation(rotation + 90 )
@@ -59,18 +51,18 @@ const Image = (props) => {
   }
 
   const imagesPerRow = Math.round(galleryWidth / 200);
-  const size = Math.round(galleryWidth / imagesPerRow) -1;
+  const size = Math.round(galleryWidth / imagesPerRow * imageSize) -1;
 
   return (
       <div
       className="image-root"
       ref={ref}
       style={{
-          backgroundImage: `url(${urlFromDto(dto)})`,
-          width: size + 'px',
-          height: size + 'px',
-          transform: `rotate(${rotation}deg)`,
-          opacity: isDragging ? 0: 1
+        backgroundImage: `url(${imageUrl})`,
+        width: size + 'px',
+        height: size + 'px',
+        transform: `rotate(${rotation}deg)`,
+        opacity: isDragging ? 0 : 1,
         }}
         >
         <div>
@@ -80,7 +72,7 @@ const Image = (props) => {
           <ImageModal
             showModal={showModal}
             closeModal={onEnlargeImage}
-            backgroundImage={ urlModalImage(dto) }
+            backgroundImage={ modalUrl }
           ></ImageModal>
         </div>
       </div>
