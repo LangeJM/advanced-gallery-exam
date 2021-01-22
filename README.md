@@ -1,3 +1,5 @@
+Check out the deployed app [here](https://langejm.github.io/advanced-gallery-exam/)
+
 # Flickr Gallery
 
 Welcome to the Flickr Gallery application.
