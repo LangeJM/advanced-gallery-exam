@@ -23,9 +23,8 @@ const App = () => {
     callbackDebounce(event);
   }
 
-  const handleImageSize = (event) => { // useState Version
+  const handleImageSize = (event) => { 
     event.preventDefault(null);
-    console.log(`clicked image with id: ${event.target.id}`)
     switch (event.target.id) {
       case 'imageSmall':
         return setImageSize(0.75);
@@ -42,10 +41,9 @@ const App = () => {
       <div className="app-root">
         <div className="app-header">
           <h2>Flickr Gallery</h2>
-          <div className="d-flex justify-content-around">
+          <div className="d-flex justify-content-center">
             <ImageSize handleImage={handleImageSize}/>
             <input className="app-input" onChange={(event) => handleInputChange(event)} value={inputValue} />
-            <div style={{color:"#222222", fontSize:"0.5rem"}}>Placeholder upcoming features</div> 
             </div>
         </div>
         <DndProvider backend={HTML5Backend}>
