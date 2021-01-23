@@ -1,8 +1,12 @@
 
-
-Added option for users to resize the images (small, normal/ standard, large). Refactored code and updated React and modules to recent versions. 
+Additional features:
+- Added search criteria, location (250+ largetst cities of the world).
+- Added option for users to resize the images (small, normal/ standard, large). 
+- Refactored code and updated React and modules to recent versions. 
 
 Check out the deployed app [here](https://langejm.github.io/advanced-gallery-exam/)
+
+<br>
 
 
 # Flickr Gallery
