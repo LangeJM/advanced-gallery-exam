@@ -5,6 +5,7 @@ import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import React, { useState, useEffect, useRef } from 'react';
 import update from 'immutability-helper';
+import worldCities from '../FilterComponents/worldcities-selection.json'
 
 const Gallery = (props) => {
   const [images, setImages] = useState([]);
@@ -15,10 +16,20 @@ const Gallery = (props) => {
   const getImages = (tag) => {
     const pageNumber = apiCallsRef.current + 1;
     let apiEndpoint = ''
+    let locationString = ''
+    
     if (tag) apiEndpoint = 'flickr.photos.search'
     else apiEndpoint = 'flickr.photos.getRecent';
+
+    // lookup lat lon values for city selected and write to search query, if exists 
+    for (const key in worldCities) {
+      if (worldCities[key].location === props.location && worldCities[key].location !== 'No filter')
+      {
+        locationString = '&lat=' + worldCities[key].lat + '&lon=' + worldCities[key].lng
+      }
+    }
     
-    const getImagesUrl = `services/rest/?method=${apiEndpoint}&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&page=${pageNumber}&format=json&nojsoncallback=1`;
+    const getImagesUrl = `services/rest/?method=${apiEndpoint}&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any${locationString}&per_page=100&page=${pageNumber}&format=json&nojsoncallback=1`;
     const baseUrl = 'https://api.flickr.com/';
 
     axios({
@@ -31,15 +42,12 @@ const Gallery = (props) => {
         apiCallsRef.current += 1
         if (
           res &&
-          res.photos &&
-          res.photos.photo &&
           res.photos.photo.length > 0
         ) {
           if (apiCallsRef.current === 1) setImages([...res.photos.photo]);
           else setImages([...images, ...res.photos.photo]);
           setMaxPages(res.photos.pages)      
           }
-        
       }
       );
   }
@@ -56,7 +64,6 @@ const Gallery = (props) => {
     return function cleanup() {
       window.removeEventListener('resize', updateDimensions);
     };
-    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
