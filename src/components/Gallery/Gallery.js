@@ -14,8 +14,13 @@ const Gallery = (props) => {
 
   const getImages = (tag) => {
     const pageNumber = apiCallsRef.current + 1;
-    const getImagesUrl = `services/rest/?method=flickr.photos.search&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&page=${pageNumber}&format=json&nojsoncallback=1`;
+    let apiEndpoint = ''
+    if (tag) apiEndpoint = 'flickr.photos.search'
+    else apiEndpoint = 'flickr.photos.getRecent';
+    
+    const getImagesUrl = `services/rest/?method=${apiEndpoint}&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&page=${pageNumber}&format=json&nojsoncallback=1`;
     const baseUrl = 'https://api.flickr.com/';
+
     axios({
       url: getImagesUrl,
       baseURL: baseUrl,
@@ -32,22 +37,28 @@ const Gallery = (props) => {
         ) {
           if (apiCallsRef.current === 1) setImages([...res.photos.photo]);
           else setImages([...images, ...res.photos.photo]);
+          setMaxPages(res.photos.pages)      
           }
-        setMaxPages(res.photos.pages)      
+        
       }
       );
   }
 
   useEffect(() => { //Component did update
     apiCallsRef.current = 0
-    getImages(props.tag);     
+    getImages(props.tag); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.tag])
+
+  useEffect(() => { //Component did mount
     setGalleryWidth(document.body.clientWidth);
     window.addEventListener('resize', updateDimensions);
     return function cleanup() {
       window.removeEventListener('resize', updateDimensions);
     };
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.tag])
+  },[])
 
   const onDeleteImage = (event, imageDetails) => {
     event.preventDefault();
