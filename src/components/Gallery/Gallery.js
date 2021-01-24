@@ -12,6 +12,7 @@ const Gallery = (props) => {
   const [galleryWidth, setGalleryWidth] = useState(1000);
   const [maxPages, setMaxPages] = useState(0);
   const apiCallsRef = useRef(0);
+  const hasSearchResults = useRef(false)
 
   const getImages = (tag) => {
     const pageNumber = apiCallsRef.current + 1;
@@ -46,8 +47,13 @@ const Gallery = (props) => {
         ) {
           if (apiCallsRef.current === 1) setImages([...res.photos.photo]);
           else setImages([...images, ...res.photos.photo]);
-          setMaxPages(res.photos.pages)      
-          }
+          setMaxPages(res.photos.pages)     
+          hasSearchResults.current = true
+        }
+        else {
+          hasSearchResults.current = false
+          setImages([])
+        }
       }
       );
   }
@@ -94,11 +100,11 @@ const Gallery = (props) => {
         dataLength={images.length}
         hasMore={apiCallsRef.current >= 1 && maxPages >= apiCallsRef.current} // this is to prevent firing of the infinite scroll for the first call
         next={() => getImages(props.tag)}
-        loader={<h4>Loading...</h4>}
+        loader={hasSearchResults.current ? <p className="mt-3">Loading...</p> : <p className="mt-3">No search results...</p>}
         scrollThreshold={'100px'}
         endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>End of image list</b>
+          <p className="mt-3" style={{ textAlign: 'center' }}>
+            {hasSearchResults.current ? <b>End of image list</b> : <b>No search results...</b>}
           </p>
         }
       >

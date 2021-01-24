@@ -16,7 +16,7 @@ const App = () => {
   const location = useRef();
 
   // eslint-disable-next-line
-  const callbackDebounce  = useCallback(debounce((event) => setTag(event.target.value), 2000), []);
+  const callbackDebounce  = useCallback(debounce((event) => setTag(event.target.value), 1000), []);
 
   const handleInputChange = (event) => {
     event.preventDefault();
