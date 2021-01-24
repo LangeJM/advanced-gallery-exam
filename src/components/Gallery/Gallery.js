@@ -18,9 +18,6 @@ const Gallery = (props) => {
     const pageNumber = apiCallsRef.current + 1;
     let apiEndpoint = ''
     let locationString = ''
-    
-    if (tag) apiEndpoint = 'flickr.photos.search'
-    else apiEndpoint = 'flickr.photos.getRecent';
 
     // lookup lat lon values for city selected and write to search query, if exists 
     for (const key in worldCities) {
@@ -29,6 +26,9 @@ const Gallery = (props) => {
         locationString = '&lat=' + worldCities[key].lat + '&lon=' + worldCities[key].lng
       }
     }
+
+    if (tag || locationString.length) apiEndpoint = 'flickr.photos.search'
+    else apiEndpoint = 'flickr.photos.getRecent';
     
     const getImagesUrl = `services/rest/?method=${apiEndpoint}&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any${locationString}&per_page=100&page=${pageNumber}&format=json&nojsoncallback=1`;
     const baseUrl = 'https://api.flickr.com/';

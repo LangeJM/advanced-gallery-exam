@@ -43,13 +43,14 @@ const App = () => {
     location.current = event.value
   }
 
+  console.log(location.current)
     return (
       <div className="app-root">
         <div className="app-header">
           <h2>Flickr Gallery</h2>
           <div className="d-flex justify-content-center flex-wrap mb-3 mt-3" style={{minWidth:"100px"}}>
             <ImageSize handleImage={handleImageSize} />
-            <input className="app-input mb-1" placeholder="Showing most recent photos" onChange={(event) => handleInputChange(event)} value={inputValue} />
+            <input className="app-input mb-1" placeholder={(location.current.length && !'No filter') ? "" : "Showing most recent photos"} onChange={(event) => handleInputChange(event)} value={inputValue} />
             <SearchLocation locationInput={handleLocationInput}/>
             </div>
         </div>
